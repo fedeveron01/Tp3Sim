@@ -5,6 +5,7 @@ import com.tp.tp3.Generador.Generador;
 import com.tp.tp3.Graficador.Modelos.Exponencial;
 import com.tp.tp3.Graficador.Modelos.IDistribucion;
 import com.tp.tp3.Graficador.Modelos.Intervalo;
+import com.tp.tp3.Graficador.Modelos.Normal;
 import com.tp.tp3.Graficador.Pantallas.PantallaGraficador;
 
 import java.util.ArrayList;
@@ -15,11 +16,18 @@ public class GestorGraficador {
     public void graficarExponencial(int n,int intervalos, double lambda, PantallaGraficador pantalla)
     {
         Exponencial exponencial = new Exponencial();
-        this.generarIntervalos(n,intervalos, exponencial ,lambda,-1,-1);
+        this.generarIntervalos(n,intervalos, exponencial ,lambda,0,1);
         var numeros = Generador.getGenerador().generarExponencial(n,lambda);
         this.contarFrecuenciaIntervalo(numeros);
         this.calcularChiCuadrado();
 
+    }
+    public void graficarNormal(int n,int intervalos, double media,double desviacion, PantallaGraficador pantalla){
+        Normal normal = new Normal();
+        this.generarIntervalos(n,intervalos, normal ,-1,desviacion,media);
+        var numeros = Generador.getGenerador().generarNormal(n,desviacion,media);
+        this.contarFrecuenciaIntervalo(numeros);
+        this.calcularChiCuadrado();
     }
 
     private boolean calcularChiCuadrado() {
@@ -59,7 +67,7 @@ public class GestorGraficador {
     public void generarIntervalos(int n, int cantidadIntervalos, IDistribucion distribucion,double lambda,double desviacion,double media ){
         this.intervalos = new ArrayList<Intervalo>();
         double desde = 0;
-        double tamaño = ((double) (1.0 / (double) cantidadIntervalos) );
+        double tamaño = ((double) (media / (double) cantidadIntervalos) );
         double hasta= tamaño;
 
         for(var i=0;i<cantidadIntervalos;i++)

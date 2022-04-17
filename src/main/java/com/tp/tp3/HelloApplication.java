@@ -14,7 +14,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         GestorGraficador gestorGraficador = new GestorGraficador();
-        gestorGraficador.graficarExponencial(7301,86,0.039,new PantallaGraficador());
+        gestorGraficador.graficarNormal(7301,86,30,5,new PantallaGraficador());
 
     }
 
