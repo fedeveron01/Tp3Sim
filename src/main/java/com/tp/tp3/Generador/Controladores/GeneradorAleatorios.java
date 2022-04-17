@@ -35,6 +35,23 @@ public class GeneradorAleatorios
         return lineas;
     }
 
+    public HashMap<Integer,Double> generarNormalConvolucion(int n, double desviacion,double media)
+    {
+        HashMap<Integer,Double> lineas = new HashMap<Integer,Double>();
+        for(var i=0;i<n;i++)
+        {
+
+            ArrayList<Double> randoms = new ArrayList<Double>();
+            for (var j=0;j<12;j++)
+            {
+                    randoms.add(Math.random());
+            }
+            lineas.put(i,Normal.generarRNDConvolucion(randoms,desviacion,media));
+
+        }
+        return lineas;
+    }
+
     public HashMap<Integer,Integer> generarPoisson(int n, double lambda)
     {
         HashMap<Integer,Integer> lineas = new HashMap<Integer,Integer>();

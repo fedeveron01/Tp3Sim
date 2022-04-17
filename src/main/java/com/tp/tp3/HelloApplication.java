@@ -1,6 +1,8 @@
 package com.tp.tp3;
 
 import com.tp.tp3.Generador.Controladores.GeneradorAleatorios;
+import com.tp.tp3.Graficador.Controladores.GestorGraficador;
+import com.tp.tp3.Graficador.Pantallas.PantallaGraficador;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,13 +13,8 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        GeneradorAleatorios generadorAleatorios = new GeneradorAleatorios();
-        var listaUniforme = generadorAleatorios.generarUniforme(1000);
-        var listaExp = generadorAleatorios.generarExponencial(1000,10);
-        var listaNormal = generadorAleatorios.generarNormal(1000,5,40);
-        var listaPoisson = generadorAleatorios.generarPoisson(1000,10);
-
-        System.out.println("Ok");
+        GestorGraficador gestorGraficador = new GestorGraficador();
+        gestorGraficador.graficarExponencial(7301,86,0.039,new PantallaGraficador());
 
     }
 
