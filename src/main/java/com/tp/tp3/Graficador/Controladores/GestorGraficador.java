@@ -1,7 +1,7 @@
 package com.tp.tp3.Graficador.Controladores;
 
 import com.tp.tp3.Generador.Controladores.GeneradorAleatorios;
-import com.tp.tp3.Generador.Generador;
+import com.tp.tp3.Generador.SingletonGenerador;
 import com.tp.tp3.Graficador.Modelos.Exponencial;
 import com.tp.tp3.Graficador.Modelos.IDistribucion;
 import com.tp.tp3.Graficador.Modelos.Intervalo;
@@ -17,7 +17,10 @@ public class GestorGraficador {
     {
         Exponencial exponencial = new Exponencial();
         this.generarIntervalos(n,intervalos, exponencial ,lambda,0,1);
-        var numeros = Generador.getGenerador().generarExponencial(n,lambda);
+        var numeros = SingletonGenerador
+                .getSingletonGenerador(new GeneradorAleatorios())
+                .getGeneradorAleatorios()
+                .generarExponencial(n,lambda);
         this.contarFrecuenciaIntervalo(numeros);
         this.calcularChiCuadrado();
 
@@ -25,7 +28,10 @@ public class GestorGraficador {
     public void graficarNormal(int n,int intervalos, double media,double desviacion, PantallaGraficador pantalla){
         Normal normal = new Normal();
         this.generarIntervalos(n,intervalos, normal ,-1,desviacion,media);
-        var numeros = Generador.getGenerador().generarNormal(n,desviacion,media);
+        var numeros = SingletonGenerador
+                .getSingletonGenerador(new GeneradorAleatorios())
+                .getGeneradorAleatorios()
+                .generarNormal(n,desviacion,media);
         this.contarFrecuenciaIntervalo(numeros);
         this.calcularChiCuadrado();
     }
