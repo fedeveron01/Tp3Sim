@@ -8,7 +8,7 @@ import com.tp.tp3.Generador.Modelos.Poisson;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GeneradorAleatorios
+public class  GeneradorAleatorios
 {
     public HashMap<Integer,Double> generarExponencial(int n, double lambda)
     {

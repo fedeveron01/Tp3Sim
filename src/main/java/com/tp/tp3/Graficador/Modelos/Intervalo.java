@@ -34,10 +34,17 @@ public class Intervalo {
         this.cAcumulado = cAcumulado;
     }
 
+    public Intervalo(double desde, double hasta, double frecuenciaEsperada, double frecuenciaObservada) {
+        this.desde = desde;
+        this.hasta = hasta;
+        this.frecuenciaEsperada = frecuenciaEsperada;
+        this.frecuenciaObservada = frecuenciaObservada;
+    }
     public Intervalo(double desde, double hasta, double frecuenciaEsperada) {
         this.desde = desde;
         this.hasta = hasta;
         this.frecuenciaEsperada = frecuenciaEsperada;
+
     }
 
     public int getI() {

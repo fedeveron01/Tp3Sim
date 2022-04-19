@@ -37,8 +37,9 @@ public class GestorGraficador {
         this.calcularChiCuadrado();
     }
 
-    private ArrayList<Intervalo> agrupar(ArrayList<Intervalo> intervalos, Intervalo intervalo){
-         double frecuenciaAcumulada = 0;
+    private void agrupar(){
+        /*
+        double frecuenciaAcumulada = 0;
          double frecuenciaEsperadaAcumulada = 0;
          double desde = 99999999;
          double hasta = 0;
@@ -59,22 +60,83 @@ public class GestorGraficador {
 
          }else{
              return intervalos;
-         }
-
-
+         }*/
+        ArrayList<Intervalo> paraAgrupar = new ArrayList<>();
+        double sumaFrecEs=0,sumaFrecOb=0, desde=0,hasta=0;
+        int ultimo=0, cant=0;
+        //comienza a rrecorrer todos los intervalos
+        for(int i=0;i<this.intervalos.size();i++){
+            if (this.intervalos.get(i).getFrecuenciaEsperada()<5){
+                //si es mnor a 5 y no tinee ninguno para agrupar lo agrega al arreglo axiliar (paraAgrupar)
+                if(paraAgrupar.isEmpty()){
+                    paraAgrupar.add(this.intervalos.get(i));
+                    sumaFrecEs +=this.intervalos.get(i).getFrecuenciaEsperada();
+                    sumaFrecOb +=this.intervalos.get(i).getFrecuenciaObservada();
+                    desde=this.intervalos.get(i).getDesde();
+                    ultimo=i-1;
+                }
+                else {
+                    sumaFrecEs+=this.intervalos.get(i).getFrecuenciaEsperada();
+                    sumaFrecOb +=this.intervalos.get(i).getFrecuenciaObservada();
+                    //si tiene otros para argrupar y la suma total de estos mas el nuevo es 5 crea un nuevo intervalo lo agrtega al arreglo final de intervalos
+                    //y limpia las variables auxiliares
+                    if (sumaFrecEs>5){
+                        hasta=this.intervalos.get(i).getHasta();
+                        Intervalo intervaloAgrupado = new Intervalo(desde,hasta,sumaFrecEs,sumaFrecOb);
+                        this.intervalosAgrupados.add(intervaloAgrupado);
+                        paraAgrupar.clear();
+                        sumaFrecEs=0;
+                        sumaFrecOb=0;
+                        desde=0;
+                        hasta=0;
+                        cant+=1;
+                    }
+                    //si no supera los 5 lo agrega al arreglo auxiliar y continua
+                    else {
+                        paraAgrupar.add(this.intervalos.get(i));
+                        sumaFrecEs +=this.intervalos.get(i).getFrecuenciaEsperada();
+                        sumaFrecOb +=this.intervalos.get(i).getFrecuenciaObservada();
+                        hasta=this.intervalos.get(i).getHasta();
+                    }
+                }
+            }
+            //si la frecuencia esperada es mayor  a 5 lo agrega
+            else {
+                    this.intervalosAgrupados.add(this.intervalos.get(i));
+                    cant+=1;
+            }
+        }
+        //al terminar el recorrido verifica si tiene intervalos dentro del arreglo auxiliar, si los tiene los suma al ultimo intervalo
+        //que se agrego pisandolo en el arreglo
+        if (!paraAgrupar.isEmpty()){
+            desde=this.intervalos.get(ultimo).getDesde();
+            sumaFrecEs+=this.intervalos.get(ultimo).getFrecuenciaEsperada();
+            sumaFrecOb+=this.intervalos.get(ultimo).getFrecuenciaObservada();
+            Intervalo intervaloAgrupado = new Intervalo(desde,hasta,sumaFrecEs,sumaFrecOb);
+            this.intervalosAgrupados.add(cant-1,intervaloAgrupado);
+            paraAgrupar.clear();
+            sumaFrecEs=0;
+            sumaFrecOb=0;
+            desde=0;
+            hasta=0;
+            cant+=1;
+        }
     }
+
     private boolean calcularChiCuadrado() {
         double cAcumulado = 0.0;
         boolean rechazar = true;
-        for(var i=0;i<this.intervalos.size();i++){
-            var fo = this.intervalos.get(i).getFrecuenciaObservada();
-            var fe = this.intervalos.get(i).getFrecuenciaEsperada();
+        //agrupa los intervalos para poder calcular el chi
+        this.agrupar();
+        for(var i=0;i<this.intervalosAgrupados.size();i++){
+            var fo = this.intervalosAgrupados.get(i).getFrecuenciaObservada();
+            var fe = this.intervalosAgrupados.get(i).getFrecuenciaEsperada();
             var c = (double) Math.pow((fo-fe),2) / (fe);
             cAcumulado += c;
-            this.intervalos.get(i).setC(c);
-            this.intervalos.get(i).setcAcumulado(cAcumulado);
+            this.intervalosAgrupados.get(i).setC(c);
+            this.intervalosAgrupados.get(i).setcAcumulado(cAcumulado);
         }
-        // agrupar
+        /* agrupar
 
         ArrayList<Intervalo> acumulados = new ArrayList<>();
         for(var j=this.intervalos.size()-1;j>=0;j--)
@@ -88,7 +150,7 @@ public class GestorGraficador {
             }
 
         }
-
+        */
 
         if (cAcumulado < 67.5){
             rechazar=false;
